@@ -1,16 +1,33 @@
 'use client';
 
-import React from 'react'
 import { Button } from 'semantic-ui-react';
 import { AuthProvider } from "@/contexts"
+import { useAuth } from '@/hooks'
 
+import React from 'react'
 
+export default function Page() {
 
-const Page = () => (
-  <div>
-    <h2>Games shop</h2>
-    <Button primary> botón </Button>
-  </div>
-)
+  const { user, logout } = useAuth();
 
-export default Page;
+  return (
+    <div>
+      <h2>Games shop</h2>
+      <Button primary> botón </Button>
+      {user ? (
+        <div>
+          <p>
+            Hola, { JSON.stringify(user.username) }
+          </p>
+          <Button onClick={logout}>Cerrar Sesión</Button>
+        </div>
+      ) : (
+          <div>
+            <a href="/join/sign-in">Iniciar sesión</a>  
+          </div>
+      )}
+    
+    </div>
+  )
+}
+
