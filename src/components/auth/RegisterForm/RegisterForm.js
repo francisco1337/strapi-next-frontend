@@ -9,8 +9,9 @@ export function RegisterForm() {
     initialValues: initialValues(),
     validationSchema: validationSchema(),
     validateOnChange: false,
-    onSubmit: () => { 
+    onSubmit: (formvalue) => { 
       console.log("formulario enviado");
+      console.log(formvalue);
     }
   })
 
@@ -27,7 +28,7 @@ export function RegisterForm() {
         <Form.Input name="password" type="password" placeholder="Contraseña" value={ formik.values.password } onChange={formik.handleChange} error={ formik.errors.password }/>
       </Form.Group>
 
-      <Form.Button type="submit" fluid >
+      <Form.Button type="submit" fluid loading={formik.isSubmitting}>
         Registrarse
       </Form.Button>
     </Form>
