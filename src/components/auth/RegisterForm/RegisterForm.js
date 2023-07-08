@@ -1,17 +1,28 @@
 'use client';
 import { Form } from "semantic-ui-react"
 import { useFormik } from "formik"
+import { useRouter } from "next/navigation";
 import { initialValues, validationSchema } from "./RegisterForm.form"
+import { Auth } from "@/api"
+
+const authCtrl = new Auth();
+
 
 export function RegisterForm() {
+  const router = useRouter();
 
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: validationSchema(),
     validateOnChange: false,
-    onSubmit: (formvalue) => { 
-      console.log("formulario enviado");
-      console.log(formvalue);
+    onSubmit: async (formValue) => { 
+      try {
+        await authCtrl.register(formValue);
+        console.log("TODO OK");
+        router.push("/join/sign-in");
+      } catch (error) {
+        console.error(error)
+      }
     }
   })
 
@@ -28,7 +39,7 @@ export function RegisterForm() {
         <Form.Input name="password" type="password" placeholder="Contraseña" value={ formik.values.password } onChange={formik.handleChange} error={ formik.errors.password }/>
       </Form.Group>
 
-      <Form.Button type="submit" fluid loading={formik.isSubmitting}>
+      <Form.Button type="submit" fluid loading={formik.isSubmitting} >
         Registrarse
       </Form.Button>
     </Form>
